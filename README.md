@@ -1,4 +1,4 @@
-# Performance Analysis and Load Balancing in Parallel Text File Processing Using MPI
+# Parallel Word Counting in a Text Corpus with MPI (LAB)
 
 ## Problem Description
 
