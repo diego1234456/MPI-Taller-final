@@ -2,7 +2,7 @@
 
 ## Problem Description
 
-The goal of this lab is to count how many times each word of a query list (`consulta.txt`, 200 words) appears in a corpus of 3,000 text files (`file_0001.txt` to `file_3000.txt`, about 44.95 million words in total) and to report the 10 most frequent query words.
+The goal of this lab is to count how many times each word of a query list (`consulta.txt`, 200 words) appears in a corpus of text files and to report the 10 most frequent query words.
 
 A sequential program has to open and tokenize the 3,000 files one after another, so it spends a lot of time on file I/O and string processing. I parallelized the task with MPI (`mpi4py`) and compared two ways of splitting the files among the processes: a static split (version 1) and a dynamic master-worker split (version 2).
 
@@ -108,7 +108,7 @@ The same thing happened in the other runs: rank 1 was the slowest every time, LI
 
 ### MPI version 2: how it corrects the imbalance, and its results
 
-`mpi2.py` replaces the static blocks with a master-worker scheme using `comm.send` and `comm.recv` (tags `TAG_REQUEST`, `TAG_FILE` and `TAG_STOP`). Rank 0 does not count words. It only hands out files: each time a worker (ranks 1, 2 and 3) finishes a file it asks for the next one, and rank 0 sends one file path. When the files run out, rank 0 sends the stop tag. A worker that gets slower files simply asks for fewer files, so the workers should end at about the same time. The price is that only 3 of the 4 processes do the counting.
+`mpi2.py` replaces the static blocks with a master-worker scheme using `comm.send` and `comm.recv`. Rank 0 does not count words. It only hands out files: each time a worker (ranks 1, 2 and 3) finishes a file it asks for the next one, and rank 0 sends one file path. When the files run out, rank 0 sends the stop tag. A worker that gets slower files simply asks for fewer files, so the workers should end at about the same time. The price is that only 3 of the 4 processes do the counting.
 
 Run 1, with 4 processes:
 
